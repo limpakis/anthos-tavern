@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anthos Tavern — Theologos, Greece</title>
+  <link rel="icon" type="image/png" href="assets/Screenshot 2026-03-26 at 12.49.11 PM.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────── CUSTOM FONTS ─────────── */
+    @font-face {
+      font-family: 'AuraDemo';
+      src: url('assets/fonts/aurademo.regular.ttf') format('truetype');
+      font-weight: normal; font-style: normal;
+    }
+    @font-face {
+      font-family: 'MadiraQueen';
+      src: url('assets/fonts/madira-queen-demo.regular.ttf') format('truetype');
+      font-weight: normal; font-style: normal;
+    }
+
+    /* ─────────── RESET & TOKENS ─────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #081e33;
+      --deep:      #0b3050;
+      --ocean:     #145c8a;
+      --sky:       #2494c8;
+      --sky-mid:   #3baed8;
+      --sky-light: #60c8e8;
+      --aqua:      #22bfc0;
+      --teal:      #179e98;
+      --seafoam:   #cceef8;
+      --pale:      #e8f7fc;
+      --frost:     #f3fbfe;
+      --white:     #ffffff;
+      --text:      #082035;
+      --muted:     #3d708a;
+
+      --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in:   cubic-bezier(0.7, 0, 0.84, 0);
+      --ease-io:   cubic-bezier(0.87, 0, 0.13, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Raleway', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─────────── SVG LOGO COMPONENT ─────────── */
+    .logo-svg { display: block; }
+
+    /* ─────────── NAVBAR ─────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 1.4rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: padding 0.5s var(--ease-out),
+                  background 0.5s var(--ease-out),
+                  box-shadow 0.5s var(--ease-out);
+    }
+    nav.scrolled {
+      padding: 0.75rem 4rem;
+      background: rgba(8, 30, 51, 0.92);
+      backdrop-filter: blur(18px) saturate(1.4);
+      -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 4px 40px rgba(0,0,0,0.3);
+    }
+    .nav-logo-wrap { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+    .nav-logo-mark { width: 38px; height: 38px; flex-shrink: 0; }
+    .nav-logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .nav-logo-text .main {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--white); letter-spacing: 0.06em;
+    }
+    .nav-logo-text .sub {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--sky-light); margin-top: 1px;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.78); text-decoration: none;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      position: relative; padding-bottom: 3px;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--sky-light);
+      transition: width 0.3s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .nav-links a:hover { color: var(--sky-light); }
+      .nav-links a:hover::after { width: 100%; }
+    }
+    .nav-cta {
+      background: var(--sky) !important; color: var(--white) !important;
+      padding: 0.55rem 1.5rem; border-radius: 2px;
+      font-weight: 600 !important; letter-spacing: 0.12em !important;
+      transition: background 0.3s, transform 0.2s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    @media (hover: hover) {
+      .nav-cta:hover { background: var(--sky-light) !important; transform: translateY(-1px); }
+    }
+
+    /* ── Hamburger button ── */
+    .hamburger {
+      display: none;
+      flex-direction: column; justify-content: center; align-items: center;
+      gap: 5px;
+      width: 44px; height: 44px;
+      background: none; border: none; cursor: pointer;
+      padding: 0; z-index: 210;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.35s var(--ease-out), opacity 0.35s var(--ease-out);
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Mobile nav overlay ── */
+    .mobile-nav {
+      position: fixed; inset: 0; z-index: 205;
+      background: rgba(6, 20, 38, 0.97);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transform: translateX(100%);
+      transition: transform 0.45s var(--ease-out);
+      padding: 2rem;
+    }
+    .mobile-nav.open { transform: translateX(0); }
+
+    .mobile-nav-logo {
+      position: absolute; top: 1.6rem; left: 1.6rem;
+      display: flex; align-items: center; gap: 0.7rem; text-decoration: none;
+    }
+    .mobile-nav-logo img { width: 36px; height: 36px; object-fit: contain; }
+    .mobile-nav-logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .mobile-nav-logo-text .main {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--white); letter-spacing: 0.06em;
+    }
+    .mobile-nav-logo-text .sub {
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--sky-light); margin-top: 1px;
+    }
+
+    .mobile-nav-close {
+      position: absolute; top: 1.4rem; right: 1.4rem;
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 1.2rem;
+      transition: background 0.25s;
+    }
+    @media (hover: hover) {
+      .mobile-nav-close:hover { background: rgba(255,255,255,0.12); }
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.3rem; width: 100%; text-align: center;
+    }
+    .mobile-nav-links a {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      padding: 0.55rem 1rem;
+      transition: color 0.25s;
+    }
+    @media (hover: hover) {
+      .mobile-nav-links a:hover { color: var(--sky-light); }
+    }
+    .mobile-nav-links .m-cta a {
+      color: var(--sky-light);
+      border: 1px solid rgba(96,200,232,0.35);
+      border-radius: 2px;
+      padding: 0.6rem 2rem;
+      margin-top: 0.5rem;
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 600;
+    }
+
+    /* ─────────── HERO ─────────── */
+    #hero {
+      height: 100vh; min-height: 700px;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('assets/sunset.jpg');
+      background-size: cover;
+      background-position: center 30%;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(175deg,
+        rgba(4,16,28,0.72) 0%,
+        rgba(8,30,51,0.60) 35%,
+        rgba(11,48,80,0.45) 65%,
+        rgba(10,20,10,0.55) 100%);
+    }
+    .caustic {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 40% at 25% 75%, rgba(96,200,232,0.14) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 35% at 78% 30%, rgba(34,191,192,0.12) 0%, transparent 70%);
+      animation: causticShift 16s ease-in-out infinite alternate;
+    }
+    @keyframes causticShift {
+      0%   { opacity: 0.7; transform: scale(1) rotate(0deg); }
+      100% { opacity: 1;   transform: scale(1.06) rotate(1.5deg); }
+    }
+    .hero-sun {
+      position: absolute; top: 10%; right: 14%;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(255,235,150,0.18) 0%, rgba(54,174,216,0.08) 50%, transparent 70%);
+      border-radius: 50%;
+      animation: sunPulse 7s ease-in-out infinite alternate;
+    }
+    @keyframes sunPulse {
+      0%   { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.18); opacity: 1; }
+    }
+    .particles { position: absolute; inset: 0; pointer-events: none; }
+    .particle {
+      position: absolute; border-radius: 50%;
+      background: rgba(192,235,248,0.65);
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      8%   { opacity: 0.9; transform: scale(1); }
+      85%  { opacity: 0.5; }
+      100% { opacity: 0;   transform: translateY(-75vh) translateX(15px) scale(0.4); }
+    }
+    .wave-wrap {
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      line-height: 0; overflow: hidden;
+    }
+    .wave-wrap svg { display: block; width: 100%; height: 110px; }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; color: var(--white);
+      padding: 6rem 2rem 2rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .hero-logo-mark { width: 100px; height: 100px; margin-bottom: 1.4rem; }
+    .hero-logo-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.45em;
+      text-transform: uppercase; color: var(--sky-light);
+      margin-bottom: 1.2rem; font-weight: 500;
+      opacity: 0; animation: heroFadeUp 1s 0.2s var(--ease-out) forwards;
+    }
+    .hero-title {
+      font-family: 'MadiraQueen', 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 400; font-style: normal; line-height: 1.1;
+      letter-spacing: 0.02em; margin-top: 5rem;
+      opacity: 0; animation: heroFadeUp 1s 0.4s var(--ease-out) forwards;
+    }
+    .hero-title em {
+      display: block; font-family: 'AuraDemo', 'Playfair Display', serif;
+      font-style: normal; font-weight: 400;
+      color: var(--sky-light); font-size: 0.5em;
+      letter-spacing: 0.04em; margin-top: 0.2em;
+    }
+    .hero-line {
+      width: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky-light), transparent);
+      margin: 1.8rem 0;
+      animation: heroLine 1s 0.7s var(--ease-out) forwards;
+    }
+    @keyframes heroLine {
+      to { width: 80px; }
+    }
+    .hero-sub {
+      font-size: 1rem; font-weight: 300; letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.72); max-width: 480px;
+      line-height: 1.85; margin-bottom: 2.5rem;
+      opacity: 0; animation: heroFadeUp 1s 0.9s var(--ease-out) forwards;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: heroFadeUp 1s 1.1s var(--ease-out) forwards;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .btn-primary {
+      background: var(--sky); color: var(--white);
+      padding: 0.95rem 2.4rem; font-size: 0.78rem;
+      font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.35s var(--ease-out), transform 0.25s var(--ease-out),
+                  box-shadow 0.35s var(--ease-out);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .btn-primary:hover {
+        background: var(--sky-light); transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(36,148,200,0.4);
+      }
+    }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: 0.95rem 2.4rem; font-size: 0.78rem;
+      font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.32);
+      transition: border-color 0.35s var(--ease-out), color 0.35s var(--ease-out),
+                  transform 0.25s var(--ease-out), background 0.35s var(--ease-out);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .btn-outline:hover {
+        border-color: var(--sky-light); color: var(--sky-light);
+        background: rgba(96,200,232,0.07);
+        transform: translateY(-3px);
+      }
+    }
+    .scroll-hint {
+      position: absolute; bottom: 130px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.35); font-size: 0.66rem;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      opacity: 0; animation: heroFadeUp 1s 1.6s var(--ease-out) forwards;
+    }
+    .scroll-mouse {
+      width: 22px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; position: relative;
+    }
+    .scroll-mouse::after {
+      content: ''; position: absolute;
+      top: 6px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 6px;
+      background: var(--sky-light); border-radius: 2px;
+      animation: scrollDot 2.2s ease-in-out infinite;
+    }
+    @keyframes scrollDot {
+      0%, 100% { top: 6px; opacity: 1; }
+      70% { top: 16px; opacity: 0; }
+    }
+
+    /* ─────────── SHARED SECTION ─────────── */
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section-label {
+      font-size: 0.7rem; letter-spacing: 0.38em;
+      text-transform: uppercase; color: var(--sky); font-weight: 600;
+      margin-bottom: 0.85rem; display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+      line-height: 1.18; margin-bottom: 1.1rem;
+    }
+    .section-title em { font-style: italic; color: var(--teal); }
+    .s-line {
+      width: 48px; height: 2px; margin-bottom: 1.8rem;
+      background: linear-gradient(90deg, var(--sky), var(--aqua));
+    }
+    .s-line.center { margin-left: auto; margin-right: auto; }
+
+    /* ─────────── LANGUAGE SELECTOR ─────────── */
+    #lang-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background:
+        radial-gradient(ellipse at 30% 80%, rgba(34,191,192,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 20%, rgba(54,174,216,0.25) 0%, transparent 50%),
+        linear-gradient(170deg, #04101c 0%, #081e33 20%, #0b3050 42%, #145c8a 68%, #22a0b8 100%);
+      overflow: hidden;
+      transition: transform 0.9s cubic-bezier(0.87,0,0.13,1), opacity 0.3s ease;
+    }
+    #lang-screen.exit {
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+    /* wave at bottom of lang screen */
+    #lang-screen .ls-wave {
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      line-height: 0;
+    }
+    #lang-screen .ls-wave svg { display: block; width: 100%; height: 80px; }
+    /* particles same as hero */
+    #lang-screen .ls-particles { position: absolute; inset: 0; pointer-events: none; }
+    .ls-logo {
+      width: 110px; height: 110px; margin-bottom: 2rem;
+      animation: heroFadeUp 0.9s 0.1s var(--ease-out) both;
+    }
+    .ls-welcome {
+      text-align: center; margin-bottom: 2.5rem;
+      animation: heroFadeUp 0.9s 0.25s var(--ease-out) both;
+    }
+    .ls-welcome .ls-en {
+      display: block; font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 600;
+      color: var(--white); letter-spacing: 0.04em; margin-bottom: 0.3rem;
+    }
+    .ls-welcome .ls-el {
+      display: block; font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 400; font-style: italic;
+      color: rgba(255,255,255,0.55); letter-spacing: 0.04em;
+    }
+    .ls-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky-light), transparent);
+      margin: 0 auto 2.8rem;
+      animation: heroFadeUp 0.9s 0.35s var(--ease-out) both;
+    }
+    .ls-cards {
+      display: flex; gap: 1.6rem; flex-wrap: wrap; justify-content: center;
+      animation: heroFadeUp 0.9s 0.45s var(--ease-out) both;
+    }
+    .ls-card {
+      width: 180px; padding: 2.2rem 1.5rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(96,200,232,0.22);
+      border-radius: 12px;
+      text-align: center; cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: background 0.3s var(--ease-out),
+                  border-color 0.3s var(--ease-out),
+                  transform 0.3s var(--ease-out),
+                  box-shadow 0.3s var(--ease-out);
+      position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .ls-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(96,200,232,0.12), rgba(34,191,192,0.06));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    @media (hover: hover) {
+      .ls-card:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(96,200,232,0.55);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(96,200,232,0.2);
+      }
+      .ls-card:hover::before { opacity: 1; }
+    }
+    .ls-card:active { transform: scale(0.97); }
+    .ls-flag { font-size: 2.8rem; margin-bottom: 1rem; display: block; }
+    .ls-lang-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.3rem;
+    }
+    .ls-lang-sub {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--sky-light);
+    }
+    /* selected ripple */
+    .ls-card.selected { animation: cardSelect 0.4s var(--ease-out) forwards; }
+    @keyframes cardSelect {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    /* lang toggle in navbar (shown after language chosen) */
+    .nav-lang-btn {
+      display: none; /* shown via JS */
+      align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 0.3rem 0.8rem;
+      cursor: pointer; color: var(--white);
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background 0.3s, border-color 0.3s;
+      margin-left: 1rem;
+    }
+    .nav-lang-btn:hover { background: rgba(255,255,255,0.14); border-color: var(--sky-light); }
+
+    /* ─────────── REVEAL ANIMATIONS ─────────── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+      will-change: opacity, transform;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .rv1 { transition-delay: 0.08s; }
+    .rv2 { transition-delay: 0.16s; }
+    .rv3 { transition-delay: 0.24s; }
+    .rv4 { transition-delay: 0.32s; }
+    .rv5 { transition-delay: 0.4s; }
+
+    /* ─────────── ABOUT ─────────── */
+    #about {
+      position: relative; overflow: hidden;
+      padding: 120px 0;
+      background: url('assets/outideview.jpg') center/cover no-repeat;
+    }
+    /* Subtle dark veil over entire section so text side can stand out */
+    #about::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(6, 20, 36, 0.25); pointer-events: none; z-index: 0;
+    }
+    #about .section-inner { position: relative; z-index: 1; }
+    /* No visual column — text panel floats on the right, left shows photo */
+    .about-grid {
+      display: flex; justify-content: flex-end;
+    }
+    /* Bottom wave out of about into experience */
+    .wave-wrap-bottom {
+      position: absolute; bottom: -2px; left: 0; right: 0;
+      line-height: 0; overflow: hidden; z-index: 2;
+    }
+    .wave-wrap-bottom svg { display: block; width: 100%; height: 110px; }
+    /* Frosted glass panel — right side only */
+    .about-text {
+      position: relative;
+      width: min(580px, 55%);
+      background: rgba(6, 22, 40, 0.58);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 3rem 3.5rem 3rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    /* 4.9 badge — top-right corner of text panel */
+    .about-emblem {
+      position: absolute; top: 1.4rem; right: 1.4rem;
+      width: 88px; height: 88px;
+      background: linear-gradient(135deg, var(--sky), var(--teal));
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 8px 28px rgba(20,92,138,0.5);
+      transition: transform 0.4s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .about-emblem:hover { transform: scale(1.05); }
+    }
+    .about-emblem .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 700; color: var(--white); line-height: 1;
+    }
+    .about-emblem .lbl {
+      font-size: 0.5rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85); margin-top: 1px; text-align: center;
+    }
+    #about .section-label { color: var(--sky-light); }
+    #about .section-title { color: var(--white); }
+    #about .section-title em { color: var(--sky-light); }
+    #about .s-line { background: var(--sky-light); }
+    .about-text p {
+      font-size: 1rem; line-height: 1.9;
+      color: rgba(255,255,255,0.88); margin-bottom: 1.1rem; font-weight: 300;
+    }
+    .about-text p strong { color: var(--sky-light); font-weight: 600; }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 2.5rem; padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem; font-weight: 700; color: var(--sky-light); line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 4px;
+    }
+
+    /* ─────────── EXPERIENCE STRIP ─────────── */
+    #experience {
+      background: #a8d8ef;
+      padding: 80px 0;
+    }
+    .exp-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      position: relative;
+    }
+    /* Smooth fade at all edges into the section bg */
+    .exp-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background:
+        linear-gradient(to right,  #a8d8ef 0%, transparent 4%),
+        linear-gradient(to left,   #a8d8ef 0%, transparent 4%),
+        linear-gradient(to top,    #a8d8ef 0%, transparent 12%);
+    }
+    .exp-grid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(to bottom, #a8d8ef 0%, transparent 12%);
+    }
+    .exp-item {
+      padding: 7rem 2.2rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.35s var(--ease-out);
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(7,32,62,0.38);
+      transition: opacity 0.4s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .exp-item:hover::before { opacity: 0.20; }
+    }
+    .exp-item > * { position: relative; z-index: 1; }
+    .exp-item:last-child { border-right: none; }
+    .exp-icon { font-size: 2.4rem; margin-bottom: 1.1rem; display: block; }
+    .exp-text-box {
+      border: 1.5px solid rgba(0,0,0,0.28);
+      border-radius: 18px;
+      padding: 1.4rem 1.6rem;
+      background: rgba(0,0,0,0.12);
+      box-shadow: 0 2px 18px rgba(0,0,0,0.18);
+      position: relative; z-index: 1;
+    }
+    .exp-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem; font-weight: 700; color: var(--sky-light); margin-bottom: 0.8rem;
+    }
+    .exp-desc {
+      font-size: 1rem; line-height: 1.75;
+      color: rgba(255,255,255,0.75); font-weight: 500;
+    }
+
+    /* ─────────── MENU ─────────── */
+    #menu { background: var(--white); padding: 120px 0; }
+    .menu-header { text-align: center; margin-bottom: 4rem; }
+    .dishes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .dish-card {
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 2px 16px rgba(8,30,51,0.08);
+      transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+      will-change: transform;
+    }
+    @media (hover: hover) {
+      .dish-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(8,30,51,0.14);
+      }
+    }
+    .dish-photo { height: 240px; position: relative; overflow: hidden; }
+    .dish-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .dish-card:hover .dish-photo img { transform: scale(1.07); }
+    }
+    .dish-photo::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(8,30,51,0.65) 0%, rgba(8,30,51,0.05) 55%, transparent 100%);
+    }
+    .dish-tag {
+      position: absolute; bottom: 14px; left: 16px; z-index: 1;
+      background: var(--sky); color: var(--white);
+      font-size: 0.66rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.28rem 0.75rem; border-radius: 2px;
+    }
+    .dish-body { background: var(--white); padding: 1.5rem 1.6rem 1.8rem; }
+    .dish-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.12rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 0.25rem;
+    }
+    .dish-gr {
+      font-size: 0.75rem; color: var(--teal);
+      letter-spacing: 0.07em; margin-bottom: 0.7rem;
+    }
+    .dish-desc {
+      font-size: 0.83rem; line-height: 1.65;
+      color: var(--muted); font-weight: 300;
+    }
+
+    /* ─────────── GALLERY ─────────── */
+    #gallery { background: var(--pale); padding: 100px 0; }
+    .gallery-header { text-align: center; margin-bottom: 3rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 10px;
+    }
+    .g-item { overflow: hidden; border-radius: 6px; position: relative; }
+    .g-item.tall { grid-row: 1 / 3; }
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .g-item:hover img { transform: scale(1.06); }
+    }
+    .g-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(8,30,51,0.28) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.4s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .g-item:hover::after { opacity: 1; }
+    }
+
+    /* ─────────── REVIEWS ─────────── */
+    #reviews { background: var(--white); padding: 110px 0; overflow: hidden; }
+    .reviews-header { text-align: center; margin-bottom: 4rem; }
+    .stars { color: var(--sky); font-size: 1.1rem; letter-spacing: 3px; margin-bottom: 0.6rem; }
+    .track-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%); }
+    .track {
+      display: flex; gap: 1.8rem;
+      animation: marquee 42s linear infinite;
+      width: max-content;
+    }
+    .track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .r-card {
+      min-width: 340px;
+      background: var(--pale); padding: 1.8rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 16px rgba(8,30,51,0.06);
+      border-left: 3px solid var(--sky); flex-shrink: 0;
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .r-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 36px rgba(8,30,51,0.11);
+      }
+    }
+    .r-stars { color: var(--sky-mid); font-size: 0.88rem; letter-spacing: 2px; margin-bottom: 0.9rem; }
+    .r-text {
+      font-size: 0.9rem; line-height: 1.75;
+      color: #2c5470; font-weight: 300; font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+    .r-author { font-size: 0.78rem; font-weight: 700; color: var(--ocean); }
+    .r-date { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    /* ─────────── LOCATION ─────────── */
+    #location {
+      background: linear-gradient(155deg, var(--navy) 0%, var(--deep) 40%, var(--ocean) 100%);
+      padding: 120px 0; color: var(--white);
+    }
+    .location-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+    .location-text .section-title { color: var(--white); }
+    .location-text .section-title em { color: var(--sky-light); }
+    .location-text p {
+      font-size: 0.98rem; line-height: 1.85;
+      color: rgba(255,255,255,0.65); font-weight: 300; margin-bottom: 1rem;
+    }
+    .info-list { list-style: none; margin-top: 1.8rem; }
+    .info-list li {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 0.9rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: 0.87rem; color: rgba(255,255,255,0.68);
+    }
+    .info-list li:last-child { border-bottom: none; }
+    .i-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .i-label {
+      font-weight: 700; color: var(--sky-light);
+      display: block; font-size: 0.68rem;
+      letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 2px;
+    }
+    .map-wrap {
+      width: 100%; aspect-ratio: 1;
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      border: 1px solid rgba(96,200,232,0.18);
+      position: relative;
+      transition: box-shadow 0.4s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .map-wrap:hover {
+        box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 2px rgba(96,200,232,0.25);
+      }
+    }
+    .map-wrap iframe {
+      width: 100%; height: 100%; display: block; border: none;
+    }
+    .map-brand {
+      position: absolute; top: 16px; left: 16px;
+      background: rgba(8,30,51,0.88);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 0.45rem 1rem 0.45rem 0.6rem;
+      display: flex; align-items: center; gap: 0.55rem;
+      pointer-events: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .map-brand-mark { width: 26px; height: 26px; }
+    .map-brand-text { display: flex; flex-direction: column; line-height: 1; }
+    .map-brand-text .mb-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem; font-weight: 700; color: var(--white);
+    }
+    .map-brand-text .mb-sub {
+      font-size: 0.55rem; color: var(--sky-light);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-top: 1px;
+    }
+
+    /* ─────────── RESERVATION ─────────── */
+    #reserve {
+      background: var(--frost); padding: 100px 2rem;
+      position: relative; overflow: hidden;
+    }
+    #reserve::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(36,148,200,0.08) 0%, transparent 70%);
+    }
+    .reserve-inner { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; text-align: center; }
+    #reserve .section-title { color: var(--navy); font-size: clamp(2.2rem,5vw,3.5rem); }
+    #reserve .section-title em { color: var(--teal); }
+    #reserve .reserve-sub {
+      color: var(--muted); font-size: 0.98rem; line-height: 1.8;
+      font-weight: 300; margin-bottom: 2.5rem;
+    }
+    .reserve-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Form card ── */
+    .res-form-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 48px rgba(8,30,51,0.10);
+      padding: 2.5rem 2.5rem 2rem;
+      text-align: left;
+      margin-top: 2rem;
+    }
+    .res-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .res-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .res-field.full { grid-column: 1 / -1; }
+    .res-field label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ocean);
+    }
+    .res-field input,
+    .res-field select,
+    .res-field textarea {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.95rem; color: var(--navy);
+      border: 1.5px solid #d0e8f4;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      background: #f7fbff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+    }
+    .res-field input:focus,
+    .res-field select:focus,
+    .res-field textarea:focus {
+      border-color: var(--sky);
+      box-shadow: 0 0 0 3px rgba(36,148,200,0.12);
+      background: white;
+    }
+    .res-field textarea { resize: vertical; min-height: 90px; }
+    .res-submit-row {
+      margin-top: 1.6rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .res-phone-link {
+      font-size: 0.82rem; color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .res-phone-link:hover { color: var(--sky); }
+    .res-call-big {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: linear-gradient(135deg, var(--sky), var(--aqua));
+      color: white; text-decoration: none;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: 0.06em;
+      padding: 1.1rem 2.8rem; border-radius: 50px;
+      box-shadow: 0 4px 24px rgba(36,148,200,0.30);
+      transition: transform 0.22s var(--ease-out), box-shadow 0.22s var(--ease-out);
+    }
+    .res-call-big:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(36,148,200,0.40); }
+    .res-submit-btn {
+      background: linear-gradient(135deg, var(--sky), var(--aqua));
+      color: white; border: none; cursor: pointer;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.95rem 2.2rem; border-radius: 50px;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), opacity 0.2s;
+      box-shadow: 0 4px 20px rgba(36,148,200,0.28);
+    }
+    .res-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(36,148,200,0.38); }
+    .res-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ── Confirmation state ── */
+    .res-confirm {
+      display: none;
+      flex-direction: column; align-items: center;
+      padding: 3rem 2rem; text-align: center;
+    }
+    .res-confirm.show { display: flex; }
+    .res-confirm-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--sky), var(--aqua));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin-bottom: 1.4rem;
+      box-shadow: 0 4px 24px rgba(36,148,200,0.3);
+    }
+    .res-confirm h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; color: var(--navy); margin-bottom: 0.6rem;
+    }
+    .res-confirm p { color: var(--muted); font-size: 0.95rem; line-height: 1.75; max-width: 380px; }
+    .res-confirm-details {
+      margin: 1.4rem 0;
+      background: #f0f9ff; border-radius: 12px;
+      padding: 1rem 1.5rem; width: 100%; max-width: 380px;
+      font-size: 0.88rem; color: var(--navy); line-height: 2;
+      text-align: left;
+    }
+    .res-confirm-details strong { color: var(--sky); }
+    .res-new-btn {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--sky);
+      background: none; border: 1.5px solid var(--sky);
+      border-radius: 50px; padding: 0.7rem 1.8rem; cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .res-new-btn:hover { background: var(--sky); color: white; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: transparent; color: var(--ocean);
+      padding: 0.95rem 2rem; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      text-decoration: none;
+      border: 1.5px solid var(--sky);
+      transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out),
+                  transform 0.25s var(--ease-out), box-shadow 0.3s var(--ease-out);
+    }
+    @media (hover: hover) {
+      .btn-ghost:hover {
+        background: var(--sky); color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(36,148,200,0.3);
+      }
+    }
+
+    /* ─────────── FOOTER ─────────── */
+    footer {
+      background: var(--navy);
+      padding: 3rem 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-logo-wrap { display: flex; align-items: center; gap: 0.7rem; }
+    .footer-logo-mark { width: 32px; height: 32px; }
+    .footer-logo-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--sky-light);
+    }
+    .footer-logo-sub {
+      font-size: 0.58rem; color: rgba(255,255,255,0.3);
+      letter-spacing: 0.3em; text-transform: uppercase; display: block;
+    }
+    .footer-copy { font-size: 0.74rem; color: rgba(255,255,255,0.2); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-size: 0.74rem; color: rgba(255,255,255,0.28);
+      text-decoration: none; transition: color 0.3s;
+    }
+    @media (hover: hover) {
+      .footer-links a:hover { color: var(--sky-light); }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE STYLES — additions only, no desktop
+       overrides except those listed in the brief
+    ═══════════════════════════════════════════ */
+
+    /* ── ≤ 960px ── */
+    @media (max-width: 960px) {
+      /* Navbar */
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.6rem 1.2rem; }
+
+      /* Hide desktop links, show hamburger */
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      /* About */
+      #about { padding: 80px 0 120px; }
+      .about-grid { justify-content: center; }
+      .about-text { width: 92%; padding: 2.5rem 1.5rem 2rem; }
+      .about-emblem { top: 1rem; right: 1rem; width: 76px; height: 76px; }
+      .about-emblem .num { font-size: 1.35rem; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+      /* Location */
+      .location-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .map-wrap { aspect-ratio: 4/3; }
+    }
+
+    /* ── ≤ 768px ── */
+    @media (max-width: 768px) {
+      /* Global section padding reduction */
+      #about    { padding: 64px 0; }
+      #menu     { padding: 64px 0; }
+      #location { padding: 64px 0; }
+      #experience { padding: 48px 0; }
+      #reviews  { padding: 48px 0; }
+      #gallery  { padding: 60px 0; }
+      #reserve  { padding: 60px 2rem; }
+
+      /* Section inner horizontal padding */
+      .section-inner { padding: 0 1.2rem; }
+
+      /* Hero */
+      .hero-logo-mark { width: 72px; height: 72px; }
+      .scroll-hint { display: none; }
+      .hero-btns {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+      .hero-btns .btn-primary,
+      .hero-btns .btn-outline { width: 100%; text-align: center; justify-content: center; }
+      .hero-sub { font-size: 0.92rem; }
+
+      /* Experience strip */
+      .exp-grid { grid-template-columns: 1fr; }
+      .exp-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        padding: 3.5rem 1.5rem;
+        min-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .exp-item:last-child { border-bottom: none; }
+      .exp-item:nth-child(3),
+      .exp-item:nth-child(4) { border-bottom: none; }
+      .exp-text-box { max-width: 480px; width: 100%; }
+      .exp-title { font-size: 1.25rem; }
+      .exp-desc  { font-size: 0.92rem; }
+
+      /* Menu */
+      .dishes-grid { grid-template-columns: 1fr; }
+
+      /* Gallery */
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .g-item { height: 220px; }
+      .g-item.tall { grid-row: auto; }
+
+      /* Reviews */
+      .r-card { min-width: 280px; }
+      .r-text { font-size: 0.85rem; }
+
+      /* Reserve */
+      .res-form-card { padding: 1.5rem 1.2rem; }
+      .res-form-grid { grid-template-columns: 1fr; }
+      .res-submit-row { flex-direction: column; align-items: stretch; text-align: center; }
+      .res-submit-btn { width: 100%; }
+      .reserve-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+      .reserve-btns .btn-primary,
+      .reserve-btns .btn-ghost {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+      }
+
+      /* Footer */
+      footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+        padding: 2rem 1.2rem;
+      }
+      .footer-links { justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
+
+      /* Button touch targets */
+      .btn-primary,
+      .btn-outline,
+      .btn-ghost { min-height: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ LANGUAGE SELECTOR ══════════════ -->
+<div id="lang-screen" role="dialog" aria-label="Choose language">
+  <div class="ls-particles" id="lsParticles"></div>
+
+  <!-- logo mark reuse -->
+  <svg class="ls-logo" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="60" r="58" fill="rgba(36,148,200,0.08)"/>
+    <circle cx="60" cy="60" r="56" stroke="rgba(96,200,232,0.5)" stroke-width="1.2" fill="none"/>
+    <circle cx="60" cy="60" r="48" stroke="rgba(96,200,232,0.15)" stroke-width="0.8" fill="none"/>
+    <path d="M22 80 C30 74 37 82 46 78 S60 74 70 78 S82 82 98 78 L98 92 C84 95 76 88 66 92 S50 95 40 92 S28 88 22 92 Z" fill="url(#lgBlue)" opacity="0.65"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(0 60 60)" opacity="0.9"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(60 60 60)" opacity="0.8"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(120 60 60)" opacity="0.8"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(180 60 60)" opacity="0.8"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(240 60 60)" opacity="0.8"/>
+    <ellipse cx="60" cy="43" rx="6" ry="11" fill="url(#lgLight)" transform="rotate(300 60 60)" opacity="0.8"/>
+    <circle cx="60" cy="60" r="7" fill="url(#lgBlue)"/>
+    <circle cx="60" cy="60" r="3" fill="white" opacity="0.95"/>
+    <circle cx="60" cy="22" r="1.5" fill="rgba(96,200,232,0.7)"/>
+    <circle cx="87" cy="33" r="1.2" fill="rgba(96,200,232,0.5)"/>
+    <circle cx="33" cy="33" r="1.2" fill="rgba(96,200,232,0.5)"/>
+  </svg>
+
+  <div class="ls-welcome">
+    <span class="ls-en">Choose your language</span>
+    <span class="ls-el">Επιλέξτε γλώσσα</span>
+  </div>
+  <div class="ls-divider"></div>
+
+  <div class="ls-cards">
+    <button class="ls-card" data-lang="en" aria-label="English">
+      <span class="ls-flag">🇬🇧</span>
+      <div class="ls-lang-name">English</div>
+      <div class="ls-lang-sub">Continue in English</div>
+    </button>
+    <button class="ls-card" data-lang="el" aria-label="Ελληνικά">
+      <span class="ls-flag">🇬🇷</span>
+      <div class="ls-lang-name">Ελληνικά</div>
+      <div class="ls-lang-sub">Συνεχίστε στα Ελληνικά</div>
+    </button>
+  </div>
+
+  <div class="ls-wave">
+    <svg viewBox="0 0 2400 80" preserveAspectRatio="none">
+      <path d="M0,40 C400,70 800,10 1200,40 S2000,70 2400,40 L2400,80 L0,80 Z" fill="rgba(96,200,232,0.15)"/>
+      <path d="M0,55 C400,30 800,75 1200,55 S2000,30 2400,55 L2400,80 L0,80 Z" fill="rgba(8,30,51,0.4)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════ SHARED SVG LOGO DEFS ══════════════ -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden">
+  <defs>
+    <linearGradient id="lgBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#2494c8"/>
+      <stop offset="100%" stop-color="#22bfc0"/>
+    </linearGradient>
+    <linearGradient id="lgLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#60c8e8"/>
+      <stop offset="100%" stop-color="#2dc5c5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ══════════════ MOBILE NAV OVERLAY ══════════════ -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <!-- Logo at top -->
+  <a href="#hero" class="mobile-nav-logo" id="mobileNavLogo">
+    <img src="assets/anthosflowerlogo.png" alt="Anthos logo" style="width:36px;height:36px;object-fit:contain;" />
+    <div class="mobile-nav-logo-text">
+      <span class="main">Anthos</span>
+      <span class="sub">Seafood Restaurant · Theologos</span>
+    </div>
+  </a>
+
+  <!-- Close button -->
+  <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+
+  <!-- Nav links -->
+  <ul class="mobile-nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#location">Find Us</a></li>
+    <li class="m-cta"><a href="#reserve">Reserve a Table</a></li>
+  </ul>
+</div>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo-wrap">
+    <img src="assets/anthosflowerlogo.png" class="nav-logo-mark" alt="Anthos logo" />
+    <div class="nav-logo-text">
+      <span class="main">Anthos</span>
+      <span class="sub">Seafood Restaurant · Theologos</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#location">Find Us</a></li>
+    <li><a href="#reserve" class="nav-cta" data-i18n="nav_reserve">Reserve</a></li>
+  </ul>
+  <button class="nav-lang-btn" id="navLangBtn" aria-label="Switch language"></button>
+
+  <!-- Hamburger (visible on ≤960px) -->
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="caustic"></div>
+  <div class="hero-sun"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-logo-mark">
+      <img src="assets/anthosflowerlogo.png" alt="Anthos logo"
+           style="width:100%;height:100%;object-fit:contain;opacity:0;animation:heroFadeUp 1s 0s var(--ease-out) forwards;" />
+    </div>
+
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Theologos, Greece &nbsp;·&nbsp; Right beside the sea</p>
+    <h1 class="hero-title">
+      Anthos
+      <em>Seafood Restaurant</em>
+    </h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub" data-i18n="hero_sub">Where the Euboic Sea meets your plate. Fresh seafood, soulful Greek flavours, and a table right beside the waves.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-primary" data-i18n="hero_btn1">Explore the Menu</a>
+      <a href="#reserve" class="btn-outline" data-i18n="hero_btn2">Make a Reservation</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-mouse"></div>
+    <span>Scroll</span>
+  </div>
+
+  <div class="wave-wrap">
+    <svg viewBox="0 0 2400 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,55 C400,90 800,18 1200,55 S2000,90 2400,55 L2400,110 L0,110 Z" fill="rgba(8,30,51,0.18)"/>
+      <path d="M0,72 C400,40 800,100 1200,72 S2000,40 2400,72 L2400,110 L0,110 Z" fill="rgba(8,30,51,0.45)"/>
+      <path d="M0,88 C300,66 700,106 1200,88 S1900,66 2400,88 L2400,110 L0,110 Z" fill="rgba(8,30,51,0.78)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="about-emblem">
+          <span class="num">4.9</span>
+          <span class="lbl">Google Stars</span>
+        </div>
+        <span class="section-label reveal rv1" data-i18n="about_label">Our Story</span>
+        <h2 class="section-title reveal rv1" data-i18n-html="about_title">A Table Born<br><em>from the Sea</em></h2>
+        <div class="s-line reveal rv2"></div>
+        <p class="reveal rv2" data-i18n-html="about_p1">Nestled on the shore of <strong>Theologos</strong>, Anthos is more than a restaurant — it is a feeling. Tables steps from the water, salt breeze in the air, and a kitchen that turns the day's freshest catch into something you'll remember for years.</p>
+        <p class="reveal rv3" data-i18n-html="about_p2">Every dish is made with <strong>locally-sourced, seasonal ingredients</strong> — crafted with care and plated with pride. Every meal ends with a complimentary surprise from the kitchen, because hospitality here is not a gesture, it's a way of life.</p>
+        <p class="reveal rv3" data-i18n="about_p3">Regulars call it a destination in itself. Visitors say it's the best meal of their trip. We simply call it home.</p>
+        <div class="about-stats reveal rv4">
+          <div class="stat"><div class="stat-num">10+</div><div class="stat-lbl" data-i18n="stat1">Years Serving</div></div>
+          <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl" data-i18n="stat2">Fresh Daily</div></div>
+          <div class="stat"><div class="stat-num">€15–20</div><div class="stat-lbl" data-i18n="stat3">Per Person</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom wave → experience section -->
+  <div class="wave-wrap-bottom">
+    <svg viewBox="0 0 2400 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,55 C400,90 800,18 1200,55 S2000,90 2400,55 L2400,110 L0,110 Z" fill="rgba(168,216,239,0.22)"/>
+      <path d="M0,72 C400,40 800,100 1200,72 S2000,40 2400,72 L2400,110 L0,110 Z" fill="rgba(168,216,239,0.55)"/>
+      <path d="M0,88 C300,66 700,106 1200,88 S1900,66 2400,88 L2400,110 L0,110 Z" fill="#a8d8ef"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════ EXPERIENCE STRIP ══════════════ -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="exp-grid">
+      <div class="exp-item reveal" style="background-image:url('assets/tables_at_sunset.jpeg');"><div class="exp-text-box"><div class="exp-title" data-i18n="exp1_title">Seafront Tables</div><p class="exp-desc" data-i18n="exp1_desc">Dine right at the water's edge. Some guests take a swim before their meal — the sea is steps away.</p></div></div>
+      <div class="exp-item reveal rv1" style="background-image:url('assets/inside.jpg');"><div class="exp-text-box"><div class="exp-title" data-i18n="exp2_title">Daily Fresh Catch</div><p class="exp-desc" data-i18n="exp2_desc">Our menu follows the sea's rhythm — only what is freshest that morning makes it to your plate.</p></div></div>
+      <div class="exp-item reveal rv2" style="background-image:url('assets/another_sunset.jpeg');"><div class="exp-text-box"><div class="exp-title" data-i18n="exp3_title">Sunset Views</div><p class="exp-desc" data-i18n="exp3_desc">Watch the Euboic Sea sky turn amber and rose as you linger over a glass of wine by the water.</p></div></div>
+      <div class="exp-item reveal rv3" style="background-image:url('assets/freedessert.jpg');"><div class="exp-text-box"><div class="exp-title" data-i18n="exp4_title">Chef's Surprise</div><p class="exp-desc" data-i18n="exp4_desc">Every meal ends with a creative complimentary treat from the kitchen — our warm tradition.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MENU ══════════════ -->
+<section id="menu">
+  <div class="section-inner">
+    <div class="menu-header">
+      <span class="section-label reveal" data-i18n="menu_label">Signature Dishes</span>
+      <h2 class="section-title reveal rv1" data-i18n-html="menu_title">The Flavours<br><em>They Never Forget</em></h2>
+      <div class="s-line center reveal rv2"></div>
+      <p class="reveal rv2" data-i18n="menu_sub" style="color:var(--muted);font-size:0.98rem;font-weight:300;max-width:500px;margin:0 auto;line-height:1.8;">From our legendary steamed mussels to the lobster pasta guests drive hours back for — the dishes our guests can't stop talking about.</p>
+    </div>
+
+    <div class="dishes-grid">
+      <div class="dish-card reveal">
+        <div class="dish-photo">
+          <img src="assets/PotatoSalad.jpg" alt="Potato Salad" loading="lazy"/>
+          <span class="dish-tag">Must Try</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Potato Salad</div>
+          <div class="dish-gr">Πατατοσαλάτα</div>
+          <p class="dish-desc" data-i18n="dish1_desc">Our legendary house potato salad — layered with fresh vegetables, herbs and a silky dressing. A guest favourite since day one.</p>
+        </div>
+      </div>
+
+      <div class="dish-card reveal rv1">
+        <div class="dish-photo">
+          <img src="assets/fishsote.jpg" alt="Fishsote" loading="lazy"/>
+          <span class="dish-tag">Chef's Favourite</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Fishsote</div>
+          <div class="dish-gr">Φιλέτο Ψαριού Σοτέ</div>
+          <p class="dish-desc" data-i18n="dish2_desc">Pan-seared fish fillet over sliced potatoes in a bright lemon butter sauce with wilted greens. The chef's pride.</p>
+        </div>
+      </div>
+
+      <div class="dish-card reveal rv2">
+        <div class="dish-photo">
+          <img src="assets/shrimpstempoura.jpg" alt="Shrimp Tempura" loading="lazy"/>
+          <span class="dish-tag">Fan Favourite</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Shrimp Tempura</div>
+          <div class="dish-gr">Γαρίδες Τεμπούρα</div>
+          <p class="dish-desc" data-i18n="dish3_desc">Golden-fried king prawns in a feather-light batter, served with a signature dipping sauce.</p>
+        </div>
+      </div>
+
+      <div class="dish-card reveal rv1">
+        <div class="dish-photo">
+          <img src="assets/karavidasteamed.jpg" alt="Steamed Karavides" loading="lazy"/>
+          <span class="dish-tag">Signature</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Steamed Karavides</div>
+          <div class="dish-gr">Καραβίδες Αχνιστές</div>
+          <p class="dish-desc" data-i18n="dish4_desc">Whole freshwater crayfish steamed in olive oil and white wine. A plateful of pure Euboic Sea indulgence.</p>
+        </div>
+      </div>
+
+      <div class="dish-card reveal rv2">
+        <div class="dish-photo">
+          <img src="assets/fancyplate.jpg" alt="Langoustines" loading="lazy"/>
+          <span class="dish-tag">Showstopper</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Langoustines in Bisque</div>
+          <div class="dish-gr">Αστακομπίσκ</div>
+          <p class="dish-desc" data-i18n="dish5_desc">Whole langoustines standing tall in a rich saffron bisque, served with toasted bread and cream.</p>
+        </div>
+      </div>
+
+      <div class="dish-card reveal rv3">
+        <div class="dish-photo">
+          <img src="assets/GrilledSardines.jpg" alt="Grilled Sardines" loading="lazy"/>
+          <span class="dish-tag">Daily Fresh</span>
+        </div>
+        <div class="dish-body">
+          <div class="dish-name">Grilled Sardines</div>
+          <div class="dish-gr">Σαρδέλες Σχάρας</div>
+          <p class="dish-desc" data-i18n="dish6_desc">Caught that morning and grilled over charcoal with lemon and fresh tomato. The sea on a plate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ GALLERY ══════════════ -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="gallery-header">
+      <span class="section-label reveal" data-i18n="gallery_label">At the Table</span>
+      <h2 class="section-title reveal rv1" data-i18n-html="gallery_title">A Feast for the <em>Eyes</em></h2>
+      <div class="s-line center reveal rv2"></div>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-item tall reveal">
+        <img src="assets/nightseaview.jpg" alt="Theologos seafront at dusk" loading="lazy"/>
+      </div>
+      <div class="g-item reveal rv1">
+        <img src="assets/casualdinner.jpg" alt="Dinner at Anthos Tavern" loading="lazy"/>
+      </div>
+      <div class="g-item reveal rv2">
+        <img src="assets/beers.jpg" alt="Local beers by the sea at Anthos" loading="lazy"/>
+      </div>
+      <div class="g-item reveal rv1">
+        <img src="assets/eviascheespie.jpg" alt="Evias cheese pie with honey" loading="lazy"/>
+      </div>
+      <div class="g-item reveal rv2">
+        <img src="assets/freedessert.jpg" alt="Complimentary dessert from the kitchen" loading="lazy"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ REVIEWS ══════════════ -->
+<section id="reviews">
+  <div class="section-inner">
+    <div class="reviews-header">
+      <span class="section-label reveal" data-i18n="reviews_label">What Guests Say</span>
+      <div class="stars reveal rv1">★★★★★</div>
+      <h2 class="section-title reveal rv1" data-i18n-html="reviews_title">Loved by Locals,<br><em>Remembered by Visitors</em></h2>
+      <div class="s-line center reveal rv2"></div>
+    </div>
+  </div>
+  <div class="track-wrap">
+    <div class="track">
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Anthos is the best restaurant in the area — stunning location with tables overlooking the sea, delicious and fresh dishes. The service is excellent and the staff are incredibly skilled and friendly!"</p><div class="r-author">Daian Lantaca</div><div class="r-date">6 months ago · Dinner, €30–35</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Φανταστικό μαγαζί — ένα από τα καλύτερα της περιοχής… ίσως και το καλύτερο! Τα μύδια αχνιστά, γαρίδες τεμπούρα, καρπάτσιο… το φαγητό από άλλο πλανήτη!"</p><div class="r-author">Anna Bitsakou</div><div class="r-date">8 months ago · €15–20</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"A must-visit in Theologos. We tried over seven dishes — all seafood — and every single one was incredible. Flavours that stay with you. And they gifted us something wonderful at the end."</p><div class="r-author">Nikos Stathas</div><div class="r-date">6 months ago · Dinner, €25–30</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Κάθε φορά που θα κατέβουμε Αθήνα θα κάνουμε οπωσδήποτε μία στάση. Η καραβιδομακαρονάδα με λευκή σάλτσα, το κριθαρώτο θαλασσινών… ανεπιφύλακτη σύσταση!"</p><div class="r-author">Giwrgos Kalivas</div><div class="r-date">4 months ago · Lunch, €25–30</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Φανταστικό μαγαζί με φρέσκα θαλασσινά και υπέροχες γεύσεις. Τα πιάτα έρχονται πάντα καλομαγειρεμένα και μυρωδάτα — η εξυπηρέτηση ζεστή και χαμογελαστή."</p><div class="r-author">Stavros Stathatos</div><div class="r-date">6 months ago · Dinner, €30–35</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Είναι ένα μαγαζί που επισκέπτεσαι τον Θεολόγο μόνο γι αυτό! Απίστευτο φαγητό, άψογο σέρβις — πετροσωλήνες, καρπάτσιο ψαριού, γόνος καλαμαριού…"</p><div class="r-author">Γιώργος Στριφτάρας</div><div class="r-date">2 years ago · Lunch, €20–25</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Καταπληκτικό μέρος — πεντανόστιμο φαγητό και δώρο ένα ονειρικό ηλιοβασίλεμα. Ο γαύρος μαρινάτος και η σαρδέλα ψητή ήταν απλά τέλεια."</p><div class="r-author">Natalia Anthopoulou</div><div class="r-date">8 months ago · €15–20</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Ότι και να φτιάξει ο μάγειρας μέσα στο στέκι του είναι δημιουργία. Συμβουλεύω όσους βρίσκονται στον Θεολόγο να επισκεφτούν το μαγαζί — αξίζει και με το παραπάνω."</p><div class="r-author">Παναγιώτης Νυδριώτης</div><div class="r-date">1 month ago</div></div>
+      <!-- loop duplicates -->
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Anthos is the best restaurant in the area — stunning location with tables overlooking the sea, delicious and fresh dishes. The service is excellent and the staff are incredibly skilled and friendly!"</p><div class="r-author">Daian Lantaca</div><div class="r-date">6 months ago · Dinner, €30–35</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Φανταστικό μαγαζί — ένα από τα καλύτερα της περιοχής… ίσως και το καλύτερο! Τα μύδια αχνιστά, γαρίδες τεμπούρα, καρπάτσιο… το φαγητό από άλλο πλανήτη!"</p><div class="r-author">Anna Bitsakou</div><div class="r-date">8 months ago · €15–20</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"A must-visit in Theologos. We tried over seven dishes — all seafood — and every single one was incredible. Flavours that stay with you."</p><div class="r-author">Nikos Stathas</div><div class="r-date">6 months ago · Dinner, €25–30</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Κάθε φορά που θα κατέβουμε Αθήνα θα κάνουμε οπωσδήποτε μία στάση. Ανεπιφύλακτη σύσταση!"</p><div class="r-author">Giwrgos Kalivas</div><div class="r-date">4 months ago · Lunch, €25–30</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Φανταστικό μαγαζί με φρέσκα θαλασσινά. Η εξυπηρέτηση ζεστή και χαμογελαστή."</p><div class="r-author">Stavros Stathatos</div><div class="r-date">6 months ago · Dinner, €30–35</div></div>
+      <div class="r-card"><div class="r-stars">★★★★★</div><p class="r-text">"Είναι ένα μαγαζί που επισκέπτεσαι τον Θεολόγο μόνο γι αυτό!"</p><div class="r-author">Γιώργος Στριφτάρας</div><div class="r-date">2 years ago · Lunch, €20–25</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LOCATION ══════════════ -->
+<section id="location">
+  <div class="section-inner">
+    <div class="location-grid">
+      <div class="location-text">
+        <span class="section-label reveal" style="color:var(--sky-light);" data-i18n="loc_label">Find Us</span>
+        <h2 class="section-title reveal rv1" data-i18n-html="loc_title">On the Shore of<br><em>Theologos</em></h2>
+        <div class="s-line reveal rv2" style="background:linear-gradient(90deg,var(--sky-light),var(--aqua));"></div>
+        <p class="reveal rv2" data-i18n="loc_p1">We sit right at the water's edge on the beach of Theologos. Park the car, breathe the sea air, and let us take care of everything else.</p>
+        <p class="reveal rv3" data-i18n="loc_p2">Whether you're a local stopping for a midweek lunch or a traveller making a special detour — you will find a warm welcome and a meal that earns every kilometre of the journey.</p>
+        <ul class="info-list reveal rv3">
+          <li><span class="i-icon">📍</span><div><span class="i-label" data-i18n="loc_addr_lbl">Address</span>Παραλιακή Θεολόγου 120, Theologos, Fthiotida</div></li>
+          <li><span class="i-icon">🕐</span><div><span class="i-label" data-i18n="loc_hours_lbl">Hours</span><span data-i18n="loc_hours_val">Open daily · Lunch from 12:00 · Dinner until late</span></div></li>
+          <li><span class="i-icon">📞</span><div><span class="i-label" data-i18n="loc_phone_lbl">Phone</span>+30 2233 093188</div></li>
+          <li><span class="i-icon">💶</span><div><span class="i-label" data-i18n="loc_price_lbl">Price Range</span><span data-i18n="loc_price_val">€15 – €40 per person · All cards accepted</span></div></li>
+        </ul>
+      </div>
+
+      <div class="map-wrap reveal rv2">
+        <iframe
+          title="Anthos Tavern on Google Maps"
+          src="https://maps.google.com/maps?q=Anthos+Taverna,+Theologos,+Fthiotida,+Greece&hl=en&z=16&output=embed"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+        <div class="map-brand">
+          <svg class="map-brand-mark" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="37" stroke="url(#lgLight)" stroke-width="1.5" fill="rgba(8,30,51,0.5)"/>
+            <path d="M16 54 C22 50 26 57 32 54 S42 50 48 54 S58 57 64 54 L64 62 C58 65 54 58 48 62 S38 65 32 62 S22 58 16 62 Z" fill="url(#lgBlue)" opacity="0.8"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(0 40 27)" opacity="0.9"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(60 40 40)" opacity="0.75"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(120 40 40)" opacity="0.75"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(180 40 40)" opacity="0.75"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(240 40 40)" opacity="0.75"/>
+            <ellipse cx="40" cy="27" rx="4" ry="7" fill="url(#lgLight)" transform="rotate(300 40 40)" opacity="0.75"/>
+            <circle cx="40" cy="40" r="4.5" fill="url(#lgBlue)"/>
+            <circle cx="40" cy="40" r="2"   fill="white" opacity="0.9"/>
+          </svg>
+          <div class="map-brand-text">
+            <span class="mb-main">Anthos</span>
+            <span class="mb-sub">Tavern · Theologos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ RESERVATION ══════════════ -->
+<section id="reserve">
+  <div class="reserve-inner">
+    <span class="section-label reveal rv1" data-i18n="res_label">Reserve Your Table</span>
+    <h2 class="section-title reveal rv1" data-i18n-html="res_title">Come Eat<br><em>Beside the Sea</em></h2>
+    <div class="s-line center reveal rv2" style="background:linear-gradient(90deg,var(--sky),var(--aqua));margin:0 auto 1.5rem;"></div>
+    <p class="reserve-sub reveal rv2" data-i18n="res_sub">Give us a call and we'll sort your table in seconds. We can't wait to welcome you.</p>
+
+    <div class="res-form-card reveal rv3" style="text-align:center; padding:3rem 2.5rem;">
+      <a href="tel:+302233093188" class="res-call-big">📞 +30 2233 093188</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-logo-wrap">
+    <img src="assets/anthosflowerlogo.png" class="footer-logo-mark" alt="Anthos logo" />
+    <div>
+      <div class="footer-logo-name">Anthos</div>
+      <span class="footer-logo-sub">Tavern · Theologos, Greece</span>
+    </div>
+  </div>
+  <div class="footer-copy">© 2025 Anthos Tavern. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#location">Location</a>
+  </div>
+</footer>
+
+<script>
+  /* ── Navbar scroll ── */
+  const nav = document.getElementById('navbar');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Intersection reveal ── */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ── Floating particles ── */
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = 1.2 + Math.random() * 2.8;
+    p.style.cssText = `left:${Math.random()*100}%;bottom:${Math.random()*40}%;
+      width:${sz}px;height:${sz}px;
+      animation-duration:${10+Math.random()*14}s;
+      animation-delay:${Math.random()*10}s;`;
+    pc.appendChild(p);
+  }
+
+  /* ══════════════ LANGUAGE SYSTEM ══════════════ */
+  const T = {
+    en: {
+      nav_reserve:    'Reserve',
+      hero_eyebrow:   'Theologos, Greece\u00a0·\u00a0Right beside the sea',
+      hero_sub:       'Where the Euboic Sea meets your plate. Fresh seafood, soulful Greek flavours, and a table right beside the waves.',
+      hero_btn1:      'Explore the Menu',
+      hero_btn2:      'Make a Reservation',
+      about_label:    'Our Story',
+      about_title:    'A Table Born<br><em>from the Sea</em>',
+      about_p1:       'Nestled on the shore of <strong>Theologos</strong>, Anthos is more than a restaurant — it is a feeling. Tables steps from the water, salt breeze in the air, and a kitchen that turns the day\'s freshest catch into something you\'ll remember for years.',
+      about_p2:       'Every dish is made with <strong>locally-sourced, seasonal ingredients</strong> — crafted with care and plated with pride. Every meal ends with a complimentary surprise from the kitchen, because hospitality here is not a gesture, it\'s a way of life.',
+      about_p3:       'Regulars call it a destination in itself. Visitors say it\'s the best meal of their trip. We simply call it home.',
+      stat1: 'Years Serving', stat2: 'Fresh Daily', stat3: 'Per Person',
+      exp1_title: 'Seafront Tables',     exp1_desc: 'Dine right at the water\'s edge. Some guests take a swim before their meal — the sea is steps away.',
+      exp2_title: 'Daily Fresh Catch',   exp2_desc: 'Our menu follows the sea\'s rhythm — only what is freshest that morning makes it to your plate.',
+      exp3_title: 'Sunset Views',        exp3_desc: 'Watch the Euboic Sea sky turn amber and rose as you linger over a glass of wine by the water.',
+      exp4_title: 'Chef\'s Surprise',    exp4_desc: 'Every meal ends with a creative complimentary treat from the kitchen — our warm tradition.',
+      dish1_desc: 'Our legendary house potato salad — layered with fresh vegetables, herbs and a silky dressing. A guest favourite since day one.',
+      dish2_desc: 'Pan-seared fish fillet over sliced potatoes in a bright lemon butter sauce with wilted greens. The chef\'s pride.',
+      dish3_desc: 'Golden-fried king prawns in a feather-light batter, served with a signature dipping sauce.',
+      dish4_desc: 'Whole freshwater crayfish steamed in olive oil and white wine. A plateful of pure Euboic Sea indulgence.',
+      dish5_desc: 'Whole langoustines standing tall in a rich saffron bisque, served with toasted bread and cream.',
+      dish6_desc: 'Caught that morning and grilled over charcoal with lemon and fresh tomato. The sea on a plate.',
+      menu_label: 'Signature Dishes',
+      menu_title: 'The Flavours<br><em>They Never Forget</em>',
+      menu_sub:   'From our legendary steamed mussels to the lobster pasta guests drive hours back for — the dishes our guests can\'t stop talking about.',
+      gallery_label: 'At the Table',
+      gallery_title: 'A Feast for the <em>Eyes</em>',
+      reviews_label: 'What Guests Say',
+      reviews_title: 'Loved by Locals,<br><em>Remembered by Visitors</em>',
+      loc_label:     'Find Us',
+      loc_title:     'On the Shore of<br><em>Theologos</em>',
+      loc_p1:        'We sit right at the water\'s edge on the beach of Theologos. Park the car, breathe the sea air, and let us take care of everything else.',
+      loc_p2:        'Whether you\'re a local stopping for a midweek lunch or a traveller making a special detour — you will find a warm welcome and a meal that earns every kilometre of the journey.',
+      loc_addr_lbl:  'Address',  loc_hours_lbl: 'Hours',
+      loc_hours_val: 'Open daily · Lunch from 12:00 · Dinner until late',
+      loc_phone_lbl: 'Phone',    loc_price_lbl: 'Price Range',
+      loc_price_val: '€15 – €20 per person · All cards accepted',
+      res_label:   'Reserve Your Table',
+      res_title:   'Come Eat<br><em>Beside the Sea</em>',
+      res_sub:     'Give us a call and we\'ll sort your table in seconds. We can\'t wait to welcome you.',
+      res_dir_btn: '🗺️\u00a0 Get Directions',
+      form_name_lbl: 'Full Name', form_email_lbl: 'Email',
+      form_date_lbl: 'Date',      form_time_lbl: 'Time',
+      form_guests_lbl: 'Guests',  form_phone_lbl: 'Phone',
+      form_notes_lbl: 'Special Requests', form_optional: '(optional)',
+      form_time_ph: 'Select a time', form_guests_ph: 'How many?',
+      form_notes_ph: 'Allergies, celebrations, seating preferences…',
+      form_submit: 'Request Reservation',
+      form_confirm_title: 'Request Sent!',
+      form_confirm_sub: 'Thank you — we\'ll confirm your table by phone or email within a few hours. We can\'t wait to welcome you.',
+      form_new_btn: 'Make Another Reservation',
+      form_summary_name: 'Name', form_summary_date: 'Date',
+      form_summary_time: 'Time', form_summary_guests: 'Guests',
+    },
+    el: {
+      nav_reserve:    'Κράτηση',
+      hero_eyebrow:   'Θεολόγος, Ελλάδα\u00a0·\u00a0Δίπλα στη θάλασσα',
+      hero_sub:       'Εκεί που ο Ευβοϊκός Κόλπος συναντά το πιάτο σου. Φρέσκα θαλασσινά, αυθεντικές ελληνικές γεύσεις και ένα τραπέζι δίπλα στα κύματα.',
+      hero_btn1:      'Δες το Μενού',
+      hero_btn2:      'Κάνε Κράτηση',
+      about_label:    'Η Ιστορία μας',
+      about_title:    'Ενα εστιατόριο γεννημένο<br><em>από τη Θάλασσα</em>',
+      about_p1:       'Χτισμένη στην ακτή του <strong>Θεολόγου</strong>, ο Ανθός είναι κάτι παραπάνω από εστιατόριο — είναι αίσθηση. Τραπέζια ανάμεσα στα κύματα, αλμυρή αύρα στον αέρα και μια κουζίνα που μετατρέπει το φρεσκότερο ψάρι της ημέρας σε αναπάντεχη γεύση.',
+      about_p2:       'Κάθε πιάτο φτιάχνεται με <strong>τοπικά, εποχιακά υλικά</strong> — με επιμέλεια και περηφάνια. Κάθε γεύμα κλείνει με μια δωρεάν έκπληξη από την κουζίνα, γιατί η φιλοξενία εδώ δεν είναι χειρονομία — είναι τρόπος ζωής.',
+      about_p3:       'Οι τακτικοί πελάτες το αποκαλούν προορισμό από μόνο του. Οι επισκέπτες λένε πως είναι το καλύτερο γεύμα του ταξιδιού τους. Εμείς απλά το αποκαλούμε σπίτι.',
+      stat1: 'Χρόνια Εμπειρίας', stat2: 'Φρέσκο Καθημερινά', stat3: 'Ανά Άτομο',
+      exp1_title: 'Τραπέζια στη Θαλασσιά',    exp1_desc: 'Φάτε ακριβώς στην άκρη του νερού. Μερικοί επισκέπτες κολυμπούν πριν το γεύμα — η θάλασσα είναι δύο βήματα μακριά.',
+      exp2_title: 'Φρέσκη Ψαριά Καθημερινά', exp2_desc: 'Το μενού ακολουθεί τον ρυθμό της θάλασσας — μόνο ό,τι είναι πιο φρέσκο το πρωί φτάνει στο πιάτο σου.',
+      exp3_title: 'Θέα στο Ηλιοβασίλεμα',    exp3_desc: 'Παρακολούθησε τον ουρανό του Ευβοϊκού Κόλπου να γίνεται κεχριμπαρένιος καθώς απολαμβάνεις ένα ποτήρι κρασί δίπλα στο νερό.',
+      exp4_title: 'Έκπληξη Σεφ',              exp4_desc: 'Κάθε γεύμα κλείνει με ένα δημιουργικό δωρεάν κέρασμα από την κουζίνα — η ζεστή μας παράδοση.',
+      dish1_desc: 'Η θρυλική σπιτική πατατοσαλάτα μας — στρωμένη με φρέσκα λαχανικά, μυρωδικά και κρεμώδες ντρέσινγκ. Αγαπημένη των επισκεπτών από την πρώτη μέρα.',
+      dish2_desc: 'Φιλέτο ψαριού σοτέ πάνω σε φέτες πατάτας με φρέσκια σάλτσα βουτύρου λεμονιού και μαραμένα χόρτα. Η περηφάνια του σεφ.',
+      dish3_desc: 'Γαρίδες τηγανητές σε ελαφριά τραγανή κρούστα, με σπέσιαλ σάλτσα βουτήγματος.',
+      dish4_desc: 'Ολόκληρες καραβίδες αχνιστές με ελαιόλαδο και λευκό κρασί. Ένα πιάτο γεμάτο ευβοϊκή απόλαυση.',
+      dish5_desc: 'Ολόκληρες καραβίδες σε πλούσιο μπίσκ σαφράν, με φρυγανισμένο ψωμί και κρέμα.',
+      dish6_desc: 'Πιασμένες το πρωί και ψημένες στα κάρβουνα με λεμόνι και φρέσκια ντομάτα. Η θάλασσα σε ένα πιάτο.',
+      menu_label: 'Σιγνάτουρα Πιάτα',
+      menu_title: 'Οι Γεύσεις<br><em>που Δεν Ξεχνιούνται</em>',
+      menu_sub:   'Από τα θρυλικά αχνιστά μύδια μας ως την καραβιδομακαρονάδα που οι επισκέπτες κάνουν ώρες δρόμο για να ξαναγευτούν — τα πιάτα για τα οποία δεν σταματούν να μιλούν.',
+      gallery_label: 'Στο Τραπέζι',
+      gallery_title: 'Μια Γιορτή για τα <em>Μάτια</em>',
+      reviews_label: 'Τι Λένε οι Επισκέπτες',
+      reviews_title: 'Αγαπημένο από Ντόπιους,<br><em>Αξέχαστο για Επισκέπτες</em>',
+      loc_label:     'Βρες μας',
+      loc_title:     'Στην Παραλία<br><em>του Θεολόγου</em>',
+      loc_p1:        'Βρισκόμαστε στην ακτή του Θεολόγου. Παρκάρεις, αναπνέεις τον αέρα της θάλασσας και αφήνεις τα υπόλοιπα σε εμάς.',
+      loc_p2:        'Είτε είσαι ντόπιος που σταματάς για μεσημεριανό είτε ταξιδιώτης που κάνεις ειδική στάση — θα βρεις ζεστή υποδοχή και ένα γεύμα που αξίζει κάθε χιλιόμετρο.',
+      loc_addr_lbl:  'Διεύθυνση',  loc_hours_lbl: 'Ωράριο',
+      loc_hours_val: 'Ανοιχτά καθημερινά · Μεσημεριανό από 12:00 · Βραδινό έως αργά',
+      loc_phone_lbl: 'Τηλέφωνο',   loc_price_lbl: 'Τιμές',
+      loc_price_val: '€15 – €20 ανά άτομο · Αποδεκτές όλες οι κάρτες',
+      res_label:   'Κράτηση Τραπεζιού',
+      res_title:   'Ελάτε να Φάτε<br><em>Δίπλα στη Θάλασσα</em>',
+      res_sub:     'Τηλεφωνήστε μας για να κλείσετε τραπέζι — θα αναλάβουμε εμείς τα υπόλοιπα. Σας περιμένουμε.',
+      res_dir_btn: '🗺️\u00a0 Οδηγίες',
+      form_name_lbl: 'Ονοματεπώνυμο', form_email_lbl: 'Email',
+      form_date_lbl: 'Ημερομηνία',    form_time_lbl: 'Ώρα',
+      form_guests_lbl: 'Άτομα',       form_phone_lbl: 'Τηλέφωνο',
+      form_notes_lbl: 'Ειδικές Επιθυμίες', form_optional: '(προαιρετικό)',
+      form_time_ph: 'Επιλέξτε ώρα', form_guests_ph: 'Πόσα άτομα;',
+      form_notes_ph: 'Αλλεργίες, εορτασμοί, προτίμηση θέσης…',
+      form_submit: 'Αποστολή Κράτησης',
+      form_confirm_title: 'Η Κράτησή σας Στάλθηκε!',
+      form_confirm_sub: 'Ευχαριστούμε — θα επιβεβαιώσουμε το τραπέζι σας μέσω τηλεφώνου ή email εντός λίγων ωρών. Ανυπομονούμε να σας καλωσορίσουμε.',
+      form_new_btn: 'Νέα Κράτηση',
+      form_summary_name: 'Όνομα', form_summary_date: 'Ημερομηνία',
+      form_summary_time: 'Ώρα',   form_summary_guests: 'Άτομα',
+    }
+  };
+
+  function applyLang(lang) {
+    document.documentElement.lang = lang;
+    document.documentElement.setAttribute('data-lang', lang);
+    const t = T[lang];
+    // textContent nodes
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    // innerHTML nodes (contain HTML tags)
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    // mobile nav links mirror
+    document.querySelectorAll('.mobile-nav a[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    // lang button in navbar
+    const btn = document.getElementById('navLangBtn');
+    if (btn) {
+      btn.style.display = 'inline-flex';
+      btn.textContent = lang === 'en' ? '🇬🇷 ΕΛ' : '🇬🇧 EN';
+      btn.onclick = () => {
+        const next = lang === 'en' ? 'el' : 'en';
+        applyLang(next);
+        localStorage.setItem('anthosLang', next);
+      };
+    }
+    localStorage.setItem('anthosLang', lang);
+  }
+
+  /* ── Language Screen Particles ── */
+  const lsPc = document.getElementById('lsParticles');
+  if (lsPc) {
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const sz = 1 + Math.random() * 2.5;
+      p.style.cssText = `left:${Math.random()*100}%;bottom:${Math.random()*50}%;
+        width:${sz}px;height:${sz}px;
+        animation-duration:${10+Math.random()*12}s;
+        animation-delay:${Math.random()*8}s;`;
+      lsPc.appendChild(p);
+    }
+  }
+
+  /* ── Language Screen Logic ── */
+  const langScreen = document.getElementById('lang-screen');
+  const savedLang  = localStorage.getItem('anthosLang');
+
+  function dismissLangScreen(lang) {
+    applyLang(lang);
+    // brief card pulse then curtain wipe
+    langScreen.classList.add('exit');
+    langScreen.addEventListener('transitionend', () => {
+      langScreen.style.display = 'none';
+    }, { once: true });
+  }
+
+  if (savedLang && (savedLang === 'en' || savedLang === 'el')) {
+    // Returning visitor — skip screen, apply immediately
+    langScreen.style.display = 'none';
+    applyLang(savedLang);
+  } else {
+    // First visit — show the screen
+    document.querySelectorAll('.ls-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.add('selected');
+        const chosen = card.getAttribute('data-lang');
+        setTimeout(() => dismissLangScreen(chosen), 280);
+      });
+    });
+  }
+
+  /* ── Smooth anchor scroll ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' }); }
+    });
+  });
+
+  /* ── Hamburger / mobile nav ── */
+  const hamburger   = document.getElementById('hamburger');
+  const mobileNav   = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileNavClose');
+
+  function openMobileNav() {
+    mobileNav.classList.add('open');
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    mobileNav.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileNav.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+
+  mobileClose.addEventListener('click', closeMobileNav);
+
+  /* Close on any link click inside the overlay */
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeMobileNav);
+  });
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('open')) closeMobileNav();
+  });
+
+  /* ── Reservation form ── */
+  const resForm    = document.getElementById('resForm');
+  const resConfirm = document.getElementById('resConfirm');
+  const resNewBtn  = document.getElementById('resNewBtn');
+
+  // Set min date to today
+  const dateInput = document.getElementById('res-date');
+  if (dateInput) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+  }
+
+  resForm && resForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name   = document.getElementById('res-name').value.trim();
+    const email  = document.getElementById('res-email').value.trim();
+    const date   = document.getElementById('res-date').value;
+    const time   = document.getElementById('res-time').value;
+    const guests = document.getElementById('res-guests').value;
+    if (!name || !email || !date || !time || !guests) {
+      // Shake invalid fields
+      [['res-name', name], ['res-email', email], ['res-date', date], ['res-time', time], ['res-guests', guests]].forEach(([id, val]) => {
+        if (!val) {
+          const el = document.getElementById(id);
+          el.style.borderColor = '#e05c5c';
+          el.style.boxShadow   = '0 0 0 3px rgba(224,92,92,0.15)';
+          setTimeout(() => { el.style.borderColor = ''; el.style.boxShadow = ''; }, 2000);
+        }
+      });
+      return;
+    }
+    const lang = localStorage.getItem('anthosLang') || 'en';
+    const t    = T[lang];
+    // Format date nicely
+    const d = new Date(date + 'T12:00:00');
+    const dateStr = d.toLocaleDateString(lang === 'el' ? 'el-GR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('resConfirmDetails').innerHTML =
+      `<div><strong>${t.form_summary_name}:</strong> ${name}</div>` +
+      `<div><strong>${t.form_summary_date}:</strong> ${dateStr}</div>` +
+      `<div><strong>${t.form_summary_time}:</strong> ${time}</div>` +
+      `<div><strong>${t.form_summary_guests}:</strong> ${guests}</div>`;
+    resForm.style.display    = 'none';
+    resConfirm.classList.add('show');
+  });
+
+  resNewBtn && resNewBtn.addEventListener('click', function() {
+    resForm.reset();
+    resForm.style.display = '';
+    resConfirm.classList.remove('show');
+  });
+</script>
+</body>
+</html>
